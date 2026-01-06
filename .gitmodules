@@ -1,0 +1,6 @@
+[submodule "lbbs"]
+	path = lbbs
+	url = ../lbbs
+[submodule "leafok_bbs"]
+	path = leafok_bbs
+	url = ../leafok_bbs
