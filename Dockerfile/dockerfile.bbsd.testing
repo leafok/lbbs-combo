@@ -1,0 +1,11 @@
+FROM leafok/lbbs-bbsd:latest
+
+RUN apt-get update && apt-get install -y \
+    openssh-client \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY ./conf/bbsd.conf /usr/local/lbbs/conf/bbsd.conf
+RUN cp /usr/local/lbbs/conf/badwords.conf.default /usr/local/lbbs/conf/badwords.conf
+RUN cp /usr/local/lbbs/conf/bbsnet.conf.default /usr/local/lbbs/conf/bbsnet.conf
+COPY ./conf/db_conn.conf.php /usr/local/lbbs/utils/conf/db_conn.conf.php
+COPY ./script/bbsd_prepare.sh /usr/local/lbbs/bin/bbsd_prepare.sh
