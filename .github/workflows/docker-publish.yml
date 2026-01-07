@@ -78,7 +78,7 @@ jobs:
           file: Dockerfile/dockerfile.apache.testing
           push: true
           tags: |
-            ${{ env.APACHE_IMAGE }}:${{ github.ref_name }}
+            ${{ env.APACHE_IMAGE }}:testing-${{ github.ref_name }}
             ${{ env.APACHE_IMAGE }}:testing
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -90,7 +90,7 @@ jobs:
           file: Dockerfile/dockerfile.php.testing
           push: true
           tags: |
-            ${{ env.PHP_IMAGE }}:${{ github.ref_name }}
+            ${{ env.PHP_IMAGE }}:testing-${{ github.ref_name }}
             ${{ env.PHP_IMAGE }}:testing
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -102,6 +102,6 @@ jobs:
           file: Dockerfile/dockerfile.bbsd.testing
           push: true
           tags: |
-            ${{ env.BBSD_IMAGE }}:${{ github.ref_name }}
+            ${{ env.BBSD_IMAGE }}:testing-${{ github.ref_name }}
             ${{ env.BBSD_IMAGE }}:testing
           labels: ${{ steps.meta.outputs.labels }}
