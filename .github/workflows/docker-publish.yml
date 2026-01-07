@@ -1,0 +1,104 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# GitHub recommends pinning actions to a commit SHA.
+# To get a newer version, you will need to update the SHA.
+# You can also reference a tag or branch, but the action may change without warning.
+
+name: Publish Docker image
+
+on:
+  release:
+    types: [published]
+
+env:
+  APACHE_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-apache
+  PHP_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-php
+  BBSD_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-bbsd
+
+jobs:
+  push_to_registry:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v5
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: leafok/lbbs
+
+      - name: Build the Docker image (apache)
+        uses: docker/build-push-action@v5
+        with:
+          context: ./leafok_bbs
+          file: ./leafok_bbs/Dockerfile/dockerfile.apache
+          tags: |
+            ${{ env.APACHE_IMAGE }}:latest
+
+      - name: Build the Docker image (php)
+        uses: docker/build-push-action@v5
+        with:
+          context: ./leafok_bbs
+          file: ./leafok_bbs/Dockerfile/dockerfile.php
+          tags: |
+            ${{ env.PHP_IMAGE }}:latest
+
+      - name: Build the Docker image (bbsd)
+        uses: docker/build-push-action@v5
+        with:
+          context: ./lbbs
+          file: ./lbbs/Dockerfile/dockerfile.bbsd
+          tags: |
+            ${{ env.BBSD_IMAGE }}:latest
+                        
+      - name: Build the Docker image (apache:testing)
+        id: push-apache
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile/dockerfile.apache.testing
+          push: true
+          tags: |
+            ${{ env.APACHE_IMAGE }}:${{ github.ref_name }}
+            ${{ env.APACHE_IMAGE }}:latest
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Build the Docker image (php:testing)
+        id: push-php
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile/dockerfile.php.testing
+          push: true
+          tags: |
+            ${{ env.PHP_IMAGE }}:${{ github.ref_name }}
+            ${{ env.PHP_IMAGE }}:latest
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Build the Docker image (bbsd:testing)
+        id: push-bbsd
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile/dockerfile.bbsd.testing
+          push: true
+          tags: |
+            ${{ env.PHP_IMAGE }}:${{ github.ref_name }}
+            ${{ env.PHP_IMAGE }}:latest
+          labels: ${{ steps.meta.outputs.labels }}
