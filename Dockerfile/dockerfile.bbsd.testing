@@ -1,4 +1,4 @@
-FROM leafok/lbbs-bbsd:latest
+FROM leafok/lbbs-bbsd
 
 RUN apt-get update && apt-get install -y \
     openssh-client \
