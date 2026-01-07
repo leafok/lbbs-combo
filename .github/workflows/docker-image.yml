@@ -56,6 +56,14 @@ jobs:
         tags: |
           ${{ env.APACHE_IMAGE }}:testing
 
+    - name: Build the Docker image (php:testing)
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: Dockerfile/dockerfile.php.testing
+        tags: |
+          ${{ env.PHP_IMAGE }}:testing
+
     - name: Build the Docker image (bbsd:testing)
       uses: docker/build-push-action@v5
       with:

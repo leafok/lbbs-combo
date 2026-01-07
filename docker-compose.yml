@@ -30,8 +30,11 @@ services:
       - app-network
 
   php:
-    image: leafok/lbbs-php:latest
+    image: leafok/lbbs-php:testing
     restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile/dockerfile.php.testing
     volumes:
       - www-data:/var/www/html
       - php-sessions:/var/lib/php/sessions
