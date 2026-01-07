@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  APACHE_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-apache
+  PHP_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-php
+  BBSD_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-bbsd
+
 jobs:
 
   build:
@@ -20,16 +25,41 @@ jobs:
         fetch-depth: 0 # fetch all history if the action needs it
 
     - name: Build the Docker image (apache)
-      run: docker build ./leafok_bbs --file ./leafok_bbs/Dockerfile/dockerfile.apache --tag lbbs-apache:base
+      uses: docker/build-push-action@v5
+      with:
+        context: ./leafok_bbs
+        file: ./leafok_bbs/Dockerfile/dockerfile.apache
+        tags: |
+          ${{ env.APACHE_IMAGE }}:base
 
     - name: Build the Docker image (php)
-      run: docker build ./leafok_bbs --file ./leafok_bbs/Dockerfile/dockerfile.php --tag lbbs-php:base
+      uses: docker/build-push-action@v5
+      with:
+        context: ./leafok_bbs
+        file: ./leafok_bbs/Dockerfile/dockerfile.php
+        tags: |
+          ${{ env.PHP_IMAGE }}:latest
 
     - name: Build the Docker image (bbsd)
-      run: docker build ./lbbs --file ./lbbs/Dockerfile/dockerfile.bbsd --tag lbbs-bbsd:base
+      uses: docker/build-push-action@v5
+      with:
+        context: ./lbbs
+        file: ./leafok_bbs/Dockerfile/dockerfile.bbsd
+        tags: |
+          ${{ env.BBSD_IMAGE }}:base
 
     - name: Build the Docker image (apache:testing)
-      run: docker build . --file Dockerfile/dockerfile.apache.testing --tag lbbs-apache:testing
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: Dockerfile/dockerfile.apache.testing
+        tags: |
+          ${{ env.APACHE_IMAGE }}:testing
 
     - name: Build the Docker image (bbsd:testing)
-      run: docker build . --file Dockerfile/dockerfile.bbsd.testing --tag lbbs-bbsd:testing
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: Dockerfile/dockerfile.bbsd.testing
+        tags: |
+          ${{ env.BBSD_IMAGE }}:testing
