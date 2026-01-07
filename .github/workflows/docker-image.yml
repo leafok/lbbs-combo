@@ -37,7 +37,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: ./lbbs
-        file: ./leafok_bbs/Dockerfile/dockerfile.bbsd
+        file: ./lbbs/Dockerfile/dockerfile.bbsd
         tags: lbbs-bbsd:latest
 
     - name: Build the Docker image (apache:testing)
