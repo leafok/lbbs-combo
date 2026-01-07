@@ -1,4 +1,4 @@
-FROM leafok/lbbs-apache
+FROM leafok/lbbs-apache:latest
 
 RUN mkdir -p /var/www/html/conf
 
