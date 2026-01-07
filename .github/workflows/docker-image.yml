@@ -44,7 +44,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: ./lbbs
-        file: ./leafok_bbs/Dockerfile/dockerfile.bbsd
+        file: ./lbbs/Dockerfile/dockerfile.bbsd
         tags: |
           ${{ env.BBSD_IMAGE }}:latest
 
