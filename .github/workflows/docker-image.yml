@@ -30,7 +30,7 @@ jobs:
         context: ./leafok_bbs
         file: ./leafok_bbs/Dockerfile/dockerfile.apache
         tags: |
-          ${{ env.APACHE_IMAGE }}:base
+          ${{ env.APACHE_IMAGE }}:latest
 
     - name: Build the Docker image (php)
       uses: docker/build-push-action@v5
@@ -46,7 +46,7 @@ jobs:
         context: ./lbbs
         file: ./leafok_bbs/Dockerfile/dockerfile.bbsd
         tags: |
-          ${{ env.BBSD_IMAGE }}:base
+          ${{ env.BBSD_IMAGE }}:latest
 
     - name: Build the Docker image (apache:testing)
       uses: docker/build-push-action@v5
