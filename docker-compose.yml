@@ -10,8 +10,6 @@ services:
       MYSQL_DATABASE: lbbs
       MYSQL_USER: lbbs
       MYSQL_PASSWORD: YjM2ZmRmODNmYmE
-    ports:
-      - "3306:3306"
     networks:
       - app-network
 
@@ -88,7 +86,7 @@ services:
     networks:
       - app-network
     command:
-      [ "/usr/local/lbbs/bin/bbsd", "-f", "--display-log", "--display-error-log" ]
+      [ "/usr/local/lbbs/bin/bbsd", "-f" ]
 
 networks:
   app-network:
