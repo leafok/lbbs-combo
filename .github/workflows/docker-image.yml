@@ -19,15 +19,6 @@ jobs:
         submodules: recursive
         fetch-depth: 0 # fetch all history if the action needs it
 
-    - name: Build the Docker image (apache)
-      run: docker build ./leafok_bbs --file ./leafok_bbs/Dockerfile/dockerfile.apache --tag lbbs-apache:$(date +%s)
-
-    - name: Build the Docker image (php)
-      run: docker build ./leafok_bbs --file ./leafok_bbs/Dockerfile/dockerfile.php --tag lbbs-php:$(date +%s)
-
-    - name: Build the Docker image (bbsd)
-      run: docker build ./lbbs --file ./lbbs/Dockerfile/dockerfile.bbsd --tag lbbs-bbsd:$(date +%s)
-
     - name: Build the Docker image (apache:testing)
       run: docker build . --file Dockerfile/dockerfile.apache.testing --tag lbbs-apache:$(date +%s)
 
