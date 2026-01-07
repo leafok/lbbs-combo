@@ -1,0 +1,32 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository and submodules
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0 # fetch all history if the action needs it
+
+    - name: Run action from leafok_bbs
+      uses: ./leafok_bbs/.github/workflows/docker-image.yml
+
+    - name: Run action from lbbs
+      uses: ./lbbs/.github/workflows/docker-image.yml
+
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile/dockerfile.apache.testing --tag lbbs-apache:$(date +%s)
+
+    - name: Build the Docker image (PHP)
+      run: docker build . --file Dockerfile/dockerfile.bbsd.testing --tag lbbs-php:$(date +%s)
