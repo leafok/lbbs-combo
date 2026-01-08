@@ -6,11 +6,6 @@ on:
   pull_request:
     branches: [ "main" ]
 
-env:
-  APACHE_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-apache
-  PHP_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-php
-  BBSD_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-bbsd
-
 jobs:
 
   build:
@@ -24,50 +19,15 @@ jobs:
         submodules: recursive
         fetch-depth: 0 # fetch all history if the action needs it
 
-    - name: Build the Docker image (apache)
-      uses: docker/build-push-action@v5
-      with:
-        context: ./leafok_bbs
-        file: ./leafok_bbs/Dockerfile/dockerfile.apache
-        tags: |
-          ${{ env.APACHE_IMAGE }}:latest
+    - name: Build and run the stack
+      # Use 'docker compose' (v2 syntax)
+      run: docker compose up --build -d # Build images and run containers in detached mode
 
-    - name: Build the Docker image (php)
-      uses: docker/build-push-action@v5
-      with:
-        context: ./leafok_bbs
-        file: ./leafok_bbs/Dockerfile/dockerfile.php
-        tags: |
-          ${{ env.PHP_IMAGE }}:latest
+    - name: Display app version
+      # Execute tests inside one of the running containers
+      run: docker compose exec bbs /usr/local/lbbs/bin/bbsd -v
 
-    - name: Build the Docker image (bbsd)
-      uses: docker/build-push-action@v5
-      with:
-        context: ./lbbs
-        file: ./lbbs/Dockerfile/dockerfile.bbsd
-        tags: |
-          ${{ env.BBSD_IMAGE }}:latest
-
-    - name: Build the Docker image (apache:testing)
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        file: Dockerfile/dockerfile.apache.testing
-        tags: |
-          ${{ env.APACHE_IMAGE }}:testing
-
-    - name: Build the Docker image (php:testing)
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        file: Dockerfile/dockerfile.php.testing
-        tags: |
-          ${{ env.PHP_IMAGE }}:testing
-
-    - name: Build the Docker image (bbsd:testing)
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        file: Dockerfile/dockerfile.bbsd.testing
-        tags: |
-          ${{ env.BBSD_IMAGE }}:testing
+    - name: Clean up
+      # Stop and remove all containers, networks, and volumes
+      run: docker compose down
+      if: always() # Ensure cleanup runs even if tests fail
