@@ -13,10 +13,6 @@ on:
   schedule:
     # Run every day 05:10 UTC+8
     - cron: '10 21 * * *'
-  release:
-    types: [published]
-  push:
-    branches: [ "main" ]
 
 env:
   APACHE_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-apache
