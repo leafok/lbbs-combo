@@ -12,6 +12,11 @@ services:
       MYSQL_PASSWORD: YjM2ZmRmODNmYmE
     networks:
       - app-network
+    mem_limit: 512M
+    command:
+      - --skip-performance-schema
+      - --innodb-buffer-pool-size=64M
+      - --max-connections=15
 
   apache:
     image: leafok/lbbs-apache:testing
@@ -42,7 +47,7 @@ services:
     depends_on:
       mysql:
         condition: service_started
-        restart: true      
+        restart: true
     networks:
       - app-network
     expose:
@@ -64,11 +69,10 @@ services:
     depends_on:
       mysql:
         condition: service_started
-        restart: true      
+        restart: true
     networks:
       - app-network
-    command:
-      [ "/bin/sh", "/usr/local/lbbs/bin/bbsd_prepare.sh" ]
+    command: [ "/bin/sh", "/usr/local/lbbs/bin/bbsd_prepare.sh" ]
 
   bbsd:
     image: leafok/lbbs-bbsd:testing
@@ -88,8 +92,7 @@ services:
         condition: service_completed_successfully
     networks:
       - app-network
-    command:
-      [ "/usr/local/lbbs/bin/bbsd", "-f" ]
+    command: [ "/usr/local/lbbs/bin/bbsd", "-f" ]
 
 networks:
   app-network:
