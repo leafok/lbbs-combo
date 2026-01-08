@@ -10,13 +10,19 @@
 name: Publish Docker image
 
 on:
+  schedule:
+    # Run every day 05:10 UTC+8
+    - cron: '10 21 * * *'
   release:
     types: [published]
+  push:
+    branches: [ "main" ]
 
 env:
   APACHE_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-apache
   PHP_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-php
   BBSD_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-bbsd
+  build_date: $(date +%Y%m%d)
 
 jobs:
   push_to_registry:
@@ -78,7 +84,7 @@ jobs:
           file: Dockerfile/dockerfile.apache.testing
           push: true
           tags: |
-            ${{ env.APACHE_IMAGE }}:testing-${{ github.ref_name }}
+            ${{ env.APACHE_IMAGE }}:testing-${{ env.build_date }}
             ${{ env.APACHE_IMAGE }}:testing
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -90,7 +96,7 @@ jobs:
           file: Dockerfile/dockerfile.php.testing
           push: true
           tags: |
-            ${{ env.PHP_IMAGE }}:testing-${{ github.ref_name }}
+            ${{ env.PHP_IMAGE }}:testing-${{ env.build_date }}
             ${{ env.PHP_IMAGE }}:testing
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -102,6 +108,6 @@ jobs:
           file: Dockerfile/dockerfile.bbsd.testing
           push: true
           tags: |
-            ${{ env.BBSD_IMAGE }}:testing-${{ github.ref_name }}
+            ${{ env.BBSD_IMAGE }}:testing-${{ env.build_date }}
             ${{ env.BBSD_IMAGE }}:testing
           labels: ${{ steps.meta.outputs.labels }}
