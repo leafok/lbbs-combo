@@ -1,5 +1,7 @@
 # LBBS-combo - LeafOK BBS 所有组件的组合包
 
+英文版本的README.md位于[README.md](README.md)
+
 ## 简介
 
 本软件包提供了一个预配置的基于 Docker 的 LeafOK BBS 运行环境，包含 Web 版本和 Telnet 版本，适用于测试或演示目的。

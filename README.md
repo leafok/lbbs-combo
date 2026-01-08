@@ -1,5 +1,7 @@
 # LBBS-combo - Combination of all LeafOK BBS components
 
+Chinese version of README.md is located at [README.zh_CN.md](README.zh_CN.md)
+
 ## Introduction
 
 This package provides a pre-configured Docker-based running environment of LeafOK BBS, including both web version and telnet version, for testing or demo purposes.
