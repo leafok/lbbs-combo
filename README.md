@@ -1,31 +1,30 @@
 # LBBS-combo - Combination of all LeafOK BBS components
 
+## Introduction
 
-Introduction
-=================
-This package provides a pre-configured Docker-based running environment of LeafOK BBS, including both web version and telnet version, for testing or demo purpose.
+This package provides a pre-configured Docker-based running environment of LeafOK BBS, including both web version and telnet version, for testing or demo purposes.
 
+## Installation
 
-Installation
-==================
-You may either build the docker image from source code by running:  
-   sh -x build.sh  
+### Option 1: Build from source
+```bash
+sh -x build.sh
+```
 
-or pull the docker image from Docker Hub by running:  
-   docker compose pull  
+### Option 2: Pull Docker image
+```bash
+docker compose pull
+```
 
-Run the command to startup:  
-   docker compose up -d  
+### Start the application
+```bash
+docker compose up -d
+```
 
+## Copyright
 
-Copyright
-=================
-Copyright (C) 2004-2026 Leaflet <leaflet@leafok.com>  
+Copyright (C) 2004-2026 Leaflet <leaflet@leafok.com>
 
+## License
 
-License
-==================
-This program is free software; you can redistribute it and/or modify 
-it under the terms of the [GNU General Public License](LICENSE) as published by 
-the Free Software Foundation; either version 3 of the License, or    
-(at your option) any later version.   
+This program is free software; you can redistribute it and/or modify it under the terms of the [GNU General Public License](LICENSE) as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
