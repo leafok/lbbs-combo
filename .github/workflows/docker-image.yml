@@ -20,8 +20,8 @@ jobs:
         fetch-depth: 0 # fetch all history if the action needs it
 
     - name: Build and run the stack
-      # Use 'docker compose' (v2 syntax)
-      run: docker compose up --build -d # Build images and run containers in detached mode
+      # Build images and run containers in detached mode
+      run: docker compose up --build -d --wait --wait-timeout 60
 
     - name: Display app version
       # Execute tests inside one of the running containers
