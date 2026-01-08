@@ -8,4 +8,9 @@ COPY ./conf/bbsd.conf /usr/local/lbbs/conf/bbsd.conf
 RUN cp /usr/local/lbbs/conf/badwords.conf.default /usr/local/lbbs/conf/badwords.conf
 RUN cp /usr/local/lbbs/conf/bbsnet.conf.default /usr/local/lbbs/conf/bbsnet.conf
 COPY ./conf/db_conn.conf.php /usr/local/lbbs/utils/conf/db_conn.conf.php
+
+COPY ./data/eula.txt /usr/local/lbbs/data/eula.txt
+COPY ./data/register.txt /usr/local/lbbs/data/register.txt
+COPY ./data/welcome.txt /usr/local/lbbs/data/welcome.txt
+
 COPY ./script/bbsd_prepare.sh /usr/local/lbbs/bin/bbsd_prepare.sh

@@ -1,0 +1,4 @@
+[1;37m
+    该功能尚未完成，请使用WWW方式注册新帐号。
+    http://localhost:8080/bbs/user_reg.php
+[m

@@ -1,0 +1,7 @@
+
+         Welcome to MyBBS
+
+
+                  [1;5;34mWeb    [33mhttps://localhost:8080[m
+                  [0;37mSSH    localhost:2322[m
+
