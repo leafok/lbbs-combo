@@ -22,7 +22,6 @@ env:
   APACHE_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-apache
   PHP_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-php
   BBSD_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-bbsd
-  build_date: $(date +%Y%m%d)
 
 jobs:
   push_to_registry:
@@ -34,6 +33,9 @@ jobs:
       attestations: write
       id-token: write
     steps:
+      - name: Set current date as env variable
+        run: echo "BUILD_DATE=$(date +%Y%m%d)" >> $GITHUB_ENV
+
       - name: Checkout repository and submodules
         uses: actions/checkout@v4
         with:
@@ -84,7 +86,7 @@ jobs:
           file: Dockerfile/dockerfile.apache.testing
           push: true
           tags: |
-            ${{ env.APACHE_IMAGE }}:testing-${{ env.build_date }}
+            ${{ env.APACHE_IMAGE }}:testing-${{ env.BUILD_DATE }}
             ${{ env.APACHE_IMAGE }}:testing
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -96,7 +98,7 @@ jobs:
           file: Dockerfile/dockerfile.php.testing
           push: true
           tags: |
-            ${{ env.PHP_IMAGE }}:testing-${{ env.build_date }}
+            ${{ env.PHP_IMAGE }}:testing-${{ env.BUILD_DATE }}
             ${{ env.PHP_IMAGE }}:testing
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -108,6 +110,6 @@ jobs:
           file: Dockerfile/dockerfile.bbsd.testing
           push: true
           tags: |
-            ${{ env.BBSD_IMAGE }}:testing-${{ env.build_date }}
+            ${{ env.BBSD_IMAGE }}:testing-${{ env.BUILD_DATE }}
             ${{ env.BBSD_IMAGE }}:testing
           labels: ${{ steps.meta.outputs.labels }}
