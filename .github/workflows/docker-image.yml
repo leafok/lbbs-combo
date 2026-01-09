@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  DOCKERHUB_PLATFORMS: linux/amd64,linux/arm64
+  RUN_PLATFORM: linux/amd64
+
 jobs:
 
   build:
@@ -19,9 +23,13 @@ jobs:
         submodules: recursive
         fetch-depth: 0 # fetch all history if the action needs it
 
-    - name: Build and run the stack
+    - name: Build images
       # Build images and run containers in detached mode
-      run: docker compose up --build -d --wait --wait-timeout 60
+      run: sh -x build.sh
+
+    - name: Run containers
+      # Build images and run containers in detached mode
+      run: docker compose up -d --wait --wait-timeout 60
 
     - name: Display app version
       # Execute tests inside one of the running containers
