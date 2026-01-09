@@ -10,6 +10,8 @@
 name: Publish Docker image
 
 on:
+  push:
+    branches: [ "milestone" ]
   schedule:
     # Run every day 05:10 UTC+8
     - cron: '10 21 * * *'
