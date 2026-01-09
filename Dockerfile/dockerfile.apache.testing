@@ -1,6 +1,20 @@
-FROM leafok/lbbs-apache:latest
+# Use the official Apache image
+FROM httpd:2.4
 
-RUN mkdir -p /var/www/html/conf
+# Copy the custom configuration file
+COPY ./leafok_bbs/Dockerfile/httpd-vhosts.conf /usr/local/apache2/conf/extra/httpd-vhosts.conf
+RUN sed -i 's/#Include conf\/extra\/httpd-vhosts.conf/Include conf\/extra\/httpd-vhosts.conf/' /usr/local/apache2/conf/httpd.conf
+
+# Copy web application files
+COPY ./leafok_bbs/bbs /var/www/html/bbs
+COPY ./leafok_bbs/gen_ex /var/www/html/gen_ex
+COPY ./leafok_bbs/js /var/www/html/js
+COPY ./leafok_bbs/lib /var/www/html/lib
+COPY ./leafok_bbs/manage /var/www/html/manage
+RUN mkdir -p /var/www/html/bbs/cache \
+    /var/www/html/bbs/upload \
+    /var/www/html/bbs/images/face/upload_photo \
+    /var/www/html/conf /var/www/html/stat
 
 COPY ./conf/db_conn.conf.php /var/www/html/conf/db_conn.conf.php
 COPY ./conf/site.conf.php /var/www/html/conf/site.conf.php
@@ -10,4 +24,5 @@ COPY ./leafok_bbs/TODO/conf/deny_reg.conf /var/www/html/conf/deny_reg.conf
 
 COPY ./data/eula.txt /var/www/html/bbs/doc/eula.txt
 
-RUN chown -R www-data:www-data /var/www/html/conf
+# Set ownership to www-data user and group
+RUN chown -R www-data:www-data /var/www/html

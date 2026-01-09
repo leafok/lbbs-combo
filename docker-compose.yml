@@ -1,6 +1,7 @@
 services:
   mysql:
     image: mysql:8.4
+    platform: ${RUN_PLATFORM}
     restart: unless-stopped
     volumes:
       - mysql-data:/var/lib/mysql
@@ -20,6 +21,7 @@ services:
 
   apache:
     image: leafok/lbbs-apache:testing
+    platform: ${RUN_PLATFORM}
     restart: unless-stopped
     build:
       context: .
@@ -36,6 +38,7 @@ services:
 
   php:
     image: leafok/lbbs-php:testing
+    platform: ${RUN_PLATFORM}
     restart: unless-stopped
     build:
       context: .
@@ -56,6 +59,7 @@ services:
 
   bbsd-prepare:
     image: leafok/lbbs-bbsd:testing
+    platform: ${RUN_PLATFORM}
     restart: on-failure
     build:
       context: .
@@ -76,6 +80,7 @@ services:
 
   bbsd:
     image: leafok/lbbs-bbsd:testing
+    platform: ${RUN_PLATFORM}
     restart: unless-stopped
     shm_size: '4gb'
     ports:
