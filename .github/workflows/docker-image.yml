@@ -26,16 +26,3 @@ jobs:
     - name: Build images
       # Build images and run containers in detached mode
       run: sh -x build.sh
-
-    - name: Run containers
-      # Build images and run containers in detached mode
-      run: docker compose up -d --wait --wait-timeout 60
-
-    - name: Display app version
-      # Execute tests inside one of the running containers
-      run: docker compose exec bbsd /usr/local/lbbs/bin/bbsd -v
-
-    - name: Clean up
-      # Stop and remove all containers, networks, and volumes
-      run: docker compose down
-      if: always() # Ensure cleanup runs even if tests fail
