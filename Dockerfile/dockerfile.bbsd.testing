@@ -18,9 +18,9 @@ RUN ./configure --prefix=/usr/local/lbbs \
 FROM debian:13-slim
 
 # Install locales package and generate en_US.UTF-8
-RUN apt-get update && apt-get install -y locales \
+RUN apt-get update && apt-get install -y locales openssh-client \
     && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
-    && locale-gen openssh-client \
+    && locale-gen \
     && rm -rf /var/lib/apt/lists/*
 
 # Set environment variables for the locale
