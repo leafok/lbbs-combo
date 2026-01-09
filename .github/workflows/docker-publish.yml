@@ -15,6 +15,7 @@ on:
     - cron: '10 21 * * *'
 
 env:
+  DOCKERHUB_PLATFORMS: linux/amd64,linux/arm64
   APACHE_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-apache
   PHP_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-php
   BBSD_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-bbsd
@@ -44,40 +45,17 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
-        with:
-          images: leafok/lbbs
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Build the Docker image (apache)
-        uses: docker/build-push-action@v5
-        with:
-          context: ./leafok_bbs
-          file: ./leafok_bbs/Dockerfile/dockerfile.apache
-          tags: |
-            ${{ env.APACHE_IMAGE }}:latest
-
-      - name: Build the Docker image (php)
-        uses: docker/build-push-action@v5
-        with:
-          context: ./leafok_bbs
-          file: ./leafok_bbs/Dockerfile/dockerfile.php
-          tags: |
-            ${{ env.PHP_IMAGE }}:latest
-
-      - name: Build the Docker image (bbsd)
-        uses: docker/build-push-action@v5
-        with:
-          context: ./lbbs
-          file: ./lbbs/Dockerfile/dockerfile.bbsd
-          tags: |
-            ${{ env.BBSD_IMAGE }}:latest
-                        
-      - name: Build the Docker image (apache:testing)
         id: push-apache
         uses: docker/build-push-action@v5
         with:
+          platforms: ${{ env.DOCKERHUB_PLATFORMS }}
           context: .
           file: Dockerfile/dockerfile.apache.testing
           push: true
@@ -86,10 +64,11 @@ jobs:
             ${{ env.APACHE_IMAGE }}:testing
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Build the Docker image (php:testing)
+      - name: Build the Docker image (php)
         id: push-php
         uses: docker/build-push-action@v5
         with:
+          platforms: ${{ env.DOCKERHUB_PLATFORMS }}
           context: .
           file: Dockerfile/dockerfile.php.testing
           push: true
@@ -98,10 +77,11 @@ jobs:
             ${{ env.PHP_IMAGE }}:testing
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Build the Docker image (bbsd:testing)
+      - name: Build the Docker image (bbsd)
         id: push-bbsd
         uses: docker/build-push-action@v5
         with:
+          platforms: ${{ env.DOCKERHUB_PLATFORMS }}
           context: .
           file: Dockerfile/dockerfile.bbsd.testing
           push: true

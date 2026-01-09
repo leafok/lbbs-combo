@@ -8,6 +8,12 @@
 
 ## 安装
 
+### 指定构建目标和运行版本的平台
+```bash
+export DOCKERHUB_PLATFORMS="linux/amd64"
+export RUN_PLATFORM="linux/amd64"
+```
+
 ### 选项 1: 从源代码构建
 ```bash
 sh -x build.sh

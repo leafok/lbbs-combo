@@ -8,6 +8,12 @@ This package provides a pre-configured Docker-based running environment of LeafO
 
 ## Installation
 
+### Specify platforms of building targets and runtime version
+```bash
+export DOCKERHUB_PLATFORMS="linux/amd64"
+export RUN_PLATFORM="linux/amd64"
+```
+
 ### Option 1: Build from source
 ```bash
 sh -x build.sh
