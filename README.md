@@ -29,9 +29,14 @@ docker compose pull
 docker compose up -d
 ```
 
+### Update Solr data from database, on demand or periodically
+```bash
+docker exec -it lbbs-combo-php-1 /usr/local/bin/export_xml_to_solr.sh
+```
+
 ## Copyright
 
-Copyright (C) 2004-2026 Leaflet <leaflet@leafok.com>
+Copyright (C) 2001-2026 Leaflet <leaflet@leafok.com>
 
 ## License
 
