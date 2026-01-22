@@ -15,6 +15,7 @@ on:
 
 env:
   DOCKERHUB_PLATFORMS: linux/amd64,linux/arm64
+  SOLR_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-solr
   APACHE_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-apache
   PHP_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-php
   BBSD_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-bbsd
@@ -49,6 +50,19 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
+      - name: Build the Docker image (solr)
+        id: push-solr
+        uses: docker/build-push-action@v5
+        with:
+          platforms: ${{ env.DOCKERHUB_PLATFORMS }}
+          context: .
+          file: Dockerfile/dockerfile.solr.testing
+          push: true
+          tags: |
+            ${{ env.SOLR_IMAGE }}:testing-${{ env.BUILD_DATE }}
+            ${{ env.SOLR_IMAGE }}:testing
+          labels: ${{ steps.meta.outputs.labels }}
 
       - name: Build the Docker image (apache)
         id: push-apache
