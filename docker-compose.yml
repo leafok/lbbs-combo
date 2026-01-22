@@ -19,6 +19,23 @@ services:
       - --innodb-buffer-pool-size=64M
       - --max-connections=15
 
+  solr:
+    image: solr
+    platform: ${RUN_PLATFORM}
+    restart: unless-stopped
+    volumes:
+      - solr-data:/var/solr
+      - ./solr-config/conf:/opt/solr/server/solr/configsets/lbbs/conf
+    environment:
+      SOLR_OPTS: "-Dsolr.config.lib.enabled=true"
+      SOLR_JAVA_MEM: "-Xms256m -Xmx512m"
+    command:
+      - solr-precreate
+      - lbbs
+      - /opt/solr/server/solr/configsets/lbbs
+    networks:
+      - app-network
+
   apache:
     image: leafok/lbbs-apache:testing
     platform: ${RUN_PLATFORM}
@@ -33,6 +50,7 @@ services:
       - apache-logs:/usr/local/apache2/logs
     depends_on:
       - php
+      - solr
     networks:
       - app-network
 
@@ -106,6 +124,9 @@ networks:
 volumes:
   mysql-data:
     # Volume for persistent storage of mysql data
+    driver: local
+  solr-data:
+    # Volume for persistent storage of solr data
     driver: local
   www-data:
     # Volume for persistent storage of web data
