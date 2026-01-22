@@ -20,14 +20,15 @@ services:
       - --max-connections=15
 
   solr:
-    image: solr
+    image: leafok/lbbs-solr:testing
     platform: ${RUN_PLATFORM}
     restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile/dockerfile.solr.testing
     volumes:
       - solr-data:/var/solr
-      - ./solr-config/conf:/opt/solr/server/solr/configsets/lbbs/conf
     environment:
-      SOLR_OPTS: "-Dsolr.config.lib.enabled=true"
       SOLR_JAVA_MEM: "-Xms256m -Xmx512m"
     command:
       - solr-precreate

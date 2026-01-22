@@ -1,0 +1,13 @@
+FROM solr:9.10 AS base
+
+# Start from the official Solr slim image
+FROM solr:9.10-slim
+
+# Copy the composer binary from the installer stage into your final image
+COPY --from=base /opt/solr/modules/analysis-extras/lib/lucene-analysis-smartcn-*.jar /opt/solr/modules/analysis-extras/lib/
+
+# Copy custom Solr configuration
+COPY ./solr-config /opt/solr/server/solr/configsets/lbbs
+
+# Set environment variable to enable config library
+ENV SOLR_CONFIG_LIB_ENABLED="true"
