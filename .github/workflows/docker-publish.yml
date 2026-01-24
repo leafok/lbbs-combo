@@ -59,7 +59,7 @@ jobs:
         id: meta-solr
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.APACHE_IMAGE }}
+          images: ${{ env.SOLR_IMAGE }}
 
       - name: Extract Docker metadata (apache)
         id: meta-apache
@@ -77,7 +77,7 @@ jobs:
         id: meta-bbsd
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.PHP_IMAGE }}
+          images: ${{ env.BBSD_IMAGE }}
 
       - name: Build the Docker image (solr)
         id: push-solr
