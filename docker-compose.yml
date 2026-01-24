@@ -36,6 +36,7 @@ services:
       - /opt/solr/server/solr/configsets/lbbs
     networks:
       - app-network
+    mem_limit: 512M
 
   apache:
     image: leafok/lbbs-apache:testing
