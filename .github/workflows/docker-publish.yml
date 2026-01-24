@@ -13,6 +13,10 @@ on:
   push:
     branches: [ "milestone" ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   DOCKERHUB_PLATFORMS: linux/amd64,linux/arm64
   SOLR_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/lbbs-solr
