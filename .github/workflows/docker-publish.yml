@@ -51,6 +51,30 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Extract Docker metadata (solr)
+        id: meta-solr
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.APACHE_IMAGE }}
+
+      - name: Extract Docker metadata (apache)
+        id: meta-apache
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.APACHE_IMAGE }}
+
+      - name: Extract Docker metadata (php)
+        id: meta-php
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.PHP_IMAGE }}
+
+      - name: Extract Docker metadata (bbsd)
+        id: meta-bbsd
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.PHP_IMAGE }}
+
       - name: Build the Docker image (solr)
         id: push-solr
         uses: docker/build-push-action@v5
@@ -62,7 +86,10 @@ jobs:
           tags: |
             ${{ env.SOLR_IMAGE }}:testing-${{ env.BUILD_DATE }}
             ${{ env.SOLR_IMAGE }}:testing
-          labels: ${{ steps.meta.outputs.labels }}
+            ${{ steps.meta-solr.outputs.tags }}
+          labels: ${{ steps.meta-solr.outputs.labels }}
+          cache-from: type=gha # Pull cache from GitHub Actions cache
+          cache-to: type=gha,mode=max # Push cache to GitHub Actions cache
 
       - name: Build the Docker image (apache)
         id: push-apache
@@ -75,7 +102,10 @@ jobs:
           tags: |
             ${{ env.APACHE_IMAGE }}:testing-${{ env.BUILD_DATE }}
             ${{ env.APACHE_IMAGE }}:testing
-          labels: ${{ steps.meta.outputs.labels }}
+            ${{ steps.meta-apache.outputs.tags }}
+          labels: ${{ steps.meta-apache.outputs.labels }}
+          cache-from: type=gha # Pull cache from GitHub Actions cache
+          cache-to: type=gha,mode=max # Push cache to GitHub Actions cache
 
       - name: Build the Docker image (php)
         id: push-php
@@ -88,7 +118,10 @@ jobs:
           tags: |
             ${{ env.PHP_IMAGE }}:testing-${{ env.BUILD_DATE }}
             ${{ env.PHP_IMAGE }}:testing
-          labels: ${{ steps.meta.outputs.labels }}
+            ${{ steps.meta-php.outputs.tags }}
+          labels: ${{ steps.meta-php.outputs.labels }}
+          cache-from: type=gha # Pull cache from GitHub Actions cache
+          cache-to: type=gha,mode=max # Push cache to GitHub Actions cache
 
       - name: Build the Docker image (bbsd)
         id: push-bbsd
@@ -101,4 +134,7 @@ jobs:
           tags: |
             ${{ env.BBSD_IMAGE }}:testing-${{ env.BUILD_DATE }}
             ${{ env.BBSD_IMAGE }}:testing
-          labels: ${{ steps.meta.outputs.labels }}
+            ${{ steps.meta-bbsd.outputs.tags }}
+          labels: ${{ steps.meta-bbsd.outputs.labels }}
+          cache-from: type=gha # Pull cache from GitHub Actions cache
+          cache-to: type=gha,mode=max # Push cache to GitHub Actions cache
