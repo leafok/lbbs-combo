@@ -20,12 +20,12 @@ fi
 
 docker buildx inspect multi-platform-builder --bootstrap
 
-docker buildx build . --platform=$DOCKER_PLATFORMS --file Dockerfile/dockerfile.solr.testing --tag leafok/lbbs-solr:testing
-docker buildx build . --platform=$DOCKER_PLATFORMS --file Dockerfile/dockerfile.apache.testing --tag leafok/lbbs-apache:testing
-docker buildx build . --platform=$DOCKER_PLATFORMS --file Dockerfile/dockerfile.php.testing --tag leafok/lbbs-php:testing
-docker buildx build . --platform=$DOCKER_PLATFORMS --file Dockerfile/dockerfile.bbsd.testing --tag leafok/lbbs-bbsd:testing
+docker buildx build . --platform=$DOCKER_PLATFORMS --file Dockerfile/dockerfile.solr --tag leafok/lbbs-solr:combo
+docker buildx build . --platform=$DOCKER_PLATFORMS --file Dockerfile/dockerfile.apache --tag leafok/lbbs-apache:combo
+docker buildx build . --platform=$DOCKER_PLATFORMS --file Dockerfile/dockerfile.php --tag leafok/lbbs-php:combo
+docker buildx build . --platform=$DOCKER_PLATFORMS --file Dockerfile/dockerfile.bbsd --tag leafok/lbbs-bbsd:combo
 
-docker buildx build . --platform=$RUN_PLATFORM --file Dockerfile/dockerfile.solr.testing --tag leafok/lbbs-solr:testing --load
-docker buildx build . --platform=$RUN_PLATFORM --file Dockerfile/dockerfile.apache.testing --tag leafok/lbbs-apache:testing --load
-docker buildx build . --platform=$RUN_PLATFORM --file Dockerfile/dockerfile.php.testing --tag leafok/lbbs-php:testing --load
-docker buildx build . --platform=$RUN_PLATFORM --file Dockerfile/dockerfile.bbsd.testing --tag leafok/lbbs-bbsd:testing --load
+docker buildx build . --platform=$RUN_PLATFORM --file Dockerfile/dockerfile.solr --tag leafok/lbbs-solr:combo --load
+docker buildx build . --platform=$RUN_PLATFORM --file Dockerfile/dockerfile.apache --tag leafok/lbbs-apache:combo --load
+docker buildx build . --platform=$RUN_PLATFORM --file Dockerfile/dockerfile.php --tag leafok/lbbs-php:combo --load
+docker buildx build . --platform=$RUN_PLATFORM --file Dockerfile/dockerfile.bbsd --tag leafok/lbbs-bbsd:combo --load
