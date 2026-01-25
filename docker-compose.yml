@@ -20,12 +20,12 @@ services:
       - --max-connections=15
 
   solr:
-    image: leafok/lbbs-solr:testing
+    image: leafok/lbbs-solr:combo
     platform: ${RUN_PLATFORM}
     restart: unless-stopped
     build:
       context: .
-      dockerfile: Dockerfile/dockerfile.solr.testing
+      dockerfile: Dockerfile/dockerfile.solr
     volumes:
       - solr-data:/var/solr
     environment:
@@ -39,12 +39,12 @@ services:
     mem_limit: 512M
 
   apache:
-    image: leafok/lbbs-apache:testing
+    image: leafok/lbbs-apache:combo
     platform: ${RUN_PLATFORM}
     restart: unless-stopped
     build:
       context: .
-      dockerfile: Dockerfile/dockerfile.apache.testing
+      dockerfile: Dockerfile/dockerfile.apache
     ports:
       - "8080:8081"
     volumes:
@@ -57,12 +57,12 @@ services:
       - app-network
 
   php:
-    image: leafok/lbbs-php:testing
+    image: leafok/lbbs-php:combo
     platform: ${RUN_PLATFORM}
     restart: unless-stopped
     build:
       context: .
-      dockerfile: Dockerfile/dockerfile.php.testing
+      dockerfile: Dockerfile/dockerfile.php
     volumes:
       - www-data:/var/www/html
       - php-sessions:/var/lib/php/sessions
@@ -78,12 +78,12 @@ services:
     command: [ "php-fpm" ]
 
   bbsd-prepare:
-    image: leafok/lbbs-bbsd:testing
+    image: leafok/lbbs-bbsd:combo
     platform: ${RUN_PLATFORM}
     restart: on-failure
     build:
       context: .
-      dockerfile: Dockerfile/dockerfile.bbsd.testing
+      dockerfile: Dockerfile/dockerfile.bbsd
     volumes:
       - bbsd-conf:/usr/local/lbbs/conf
       - bbsd-data:/usr/local/lbbs/data
@@ -99,7 +99,7 @@ services:
     command: [ "/bin/sh", "/usr/local/lbbs/bin/bbsd_prepare.sh" ]
 
   bbsd:
-    image: leafok/lbbs-bbsd:testing
+    image: leafok/lbbs-bbsd:combo
     platform: ${RUN_PLATFORM}
     restart: unless-stopped
     shm_size: '4gb'

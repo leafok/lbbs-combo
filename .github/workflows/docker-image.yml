@@ -70,7 +70,7 @@ jobs:
       with:
         platforms: ${{ env.DOCKERHUB_PLATFORMS }}
         context: .
-        file: Dockerfile/dockerfile.solr.testing
+        file: Dockerfile/dockerfile.solr
         tags: |
           ${{ steps.meta-solr.outputs.tags }}
         labels: ${{ steps.meta-solr.outputs.labels }}
@@ -83,7 +83,7 @@ jobs:
       with:
         platforms: ${{ env.DOCKERHUB_PLATFORMS }}
         context: .
-        file: Dockerfile/dockerfile.apache.testing
+        file: Dockerfile/dockerfile.apache
         tags: |
           ${{ steps.meta-apache.outputs.tags }}
         labels: ${{ steps.meta-apache.outputs.labels }}
@@ -96,7 +96,7 @@ jobs:
       with:
         platforms: ${{ env.DOCKERHUB_PLATFORMS }}
         context: .
-        file: Dockerfile/dockerfile.php.testing
+        file: Dockerfile/dockerfile.php
         tags: |
           ${{ steps.meta-php.outputs.tags }}
         labels: ${{ steps.meta-php.outputs.labels }}
@@ -109,7 +109,7 @@ jobs:
       with:
         platforms: ${{ env.DOCKERHUB_PLATFORMS }}
         context: .
-        file: Dockerfile/dockerfile.bbsd.testing
+        file: Dockerfile/dockerfile.bbsd
         tags: |
           ${{ steps.meta-bbsd.outputs.tags }}
         labels: ${{ steps.meta-bbsd.outputs.labels }}
