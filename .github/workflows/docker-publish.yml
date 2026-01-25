@@ -35,9 +35,6 @@ jobs:
       attestations: write
       id-token: write
     steps:
-      - name: Set current date as env variable
-        run: echo "BUILD_DATE=$(date +%Y%m%d)" >> $GITHUB_ENV
-
       - name: Checkout repository and submodules
         uses: actions/checkout@v4
         with:
@@ -89,7 +86,6 @@ jobs:
           file: Dockerfile/dockerfile.solr
           push: true
           tags: |
-            ${{ env.SOLR_IMAGE }}:combo-${{ env.BUILD_DATE }}
             ${{ env.SOLR_IMAGE }}:combo
             ${{ steps.meta-solr.outputs.tags }}
           labels: ${{ steps.meta-solr.outputs.labels }}
@@ -105,7 +101,6 @@ jobs:
           file: Dockerfile/dockerfile.apache
           push: true
           tags: |
-            ${{ env.APACHE_IMAGE }}:combo-${{ env.BUILD_DATE }}
             ${{ env.APACHE_IMAGE }}:combo
             ${{ steps.meta-apache.outputs.tags }}
           labels: ${{ steps.meta-apache.outputs.labels }}
@@ -121,7 +116,6 @@ jobs:
           file: Dockerfile/dockerfile.php
           push: true
           tags: |
-            ${{ env.PHP_IMAGE }}:combo-${{ env.BUILD_DATE }}
             ${{ env.PHP_IMAGE }}:combo
             ${{ steps.meta-php.outputs.tags }}
           labels: ${{ steps.meta-php.outputs.labels }}
@@ -137,7 +131,6 @@ jobs:
           file: Dockerfile/dockerfile.bbsd
           push: true
           tags: |
-            ${{ env.BBSD_IMAGE }}:combo-${{ env.BUILD_DATE }}
             ${{ env.BBSD_IMAGE }}:combo
             ${{ steps.meta-bbsd.outputs.tags }}
           labels: ${{ steps.meta-bbsd.outputs.labels }}
