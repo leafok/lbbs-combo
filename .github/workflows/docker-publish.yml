@@ -85,6 +85,8 @@ jobs:
           context: .
           file: Dockerfile/dockerfile.solr
           push: true
+          provenance: true
+          sbom: true
           tags: |
             ${{ env.SOLR_IMAGE }}:combo
             ${{ steps.meta-solr.outputs.tags }}
@@ -100,6 +102,8 @@ jobs:
           context: .
           file: Dockerfile/dockerfile.apache
           push: true
+          provenance: true
+          sbom: true
           tags: |
             ${{ env.APACHE_IMAGE }}:combo
             ${{ steps.meta-apache.outputs.tags }}
@@ -115,6 +119,8 @@ jobs:
           context: .
           file: Dockerfile/dockerfile.php
           push: true
+          provenance: true
+          sbom: true
           tags: |
             ${{ env.PHP_IMAGE }}:combo
             ${{ steps.meta-php.outputs.tags }}
@@ -130,6 +136,8 @@ jobs:
           context: .
           file: Dockerfile/dockerfile.bbsd
           push: true
+          provenance: true
+          sbom: true
           tags: |
             ${{ env.BBSD_IMAGE }}:combo
             ${{ steps.meta-bbsd.outputs.tags }}
