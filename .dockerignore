@@ -1,0 +1,19 @@
+# Keep the build context small: only the sources and configurations that are
+# referenced by Dockerfile/dockerfile.* need to be transferred to the daemon.
+# The images are built with "." as context, so submodule Git metadata would
+# otherwise be uploaded as well (see .git/modules/*).
+.git
+**/.git
+.gitmodules
+.gitignore
+**/.gitignore
+.github
+**/.github
+**/.vscode
+
+# Not required to build any image
+build.sh
+docker-compose.yml
+**/docker-compose.yml
+sql
+LICENSE

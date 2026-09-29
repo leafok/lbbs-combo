@@ -1,7 +1,7 @@
 services:
   mysql:
     image: mysql:8.4
-    platform: ${RUN_PLATFORM}
+    platform: ${RUN_PLATFORM:-linux/amd64}
     restart: unless-stopped
     volumes:
       - mysql-data:/var/lib/mysql
@@ -18,10 +18,22 @@ services:
       - --skip-performance-schema
       - --innodb-buffer-pool-size=64M
       - --max-connections=15
+    healthcheck:
+      # $$ defers expansion to the container shell. Double quotes are required:
+      # single quotes would keep the variables literal, making every probe fail
+      # authentication (mysqladmin ping returns 0 on access denied as well, so
+      # the failure would stay invisible). MYSQL_PWD avoids the client warning
+      # about a password on the command line. A real query is used instead of
+      # `ping` so that invalid credentials mark the service unhealthy.
+      test: [ "CMD-SHELL", "MYSQL_PWD=\"$$MYSQL_PASSWORD\" mysql -h 127.0.0.1 -u \"$$MYSQL_USER\" -e 'SELECT 1' >/dev/null" ]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
 
   solr:
     image: leafok/lbbs-solr:combo
-    platform: ${RUN_PLATFORM}
+    platform: ${RUN_PLATFORM:-linux/amd64}
     restart: unless-stopped
     build:
       context: .
@@ -30,6 +42,11 @@ services:
       - solr-data:/var/solr
     environment:
       SOLR_JAVA_MEM: "-Xms256m -Xmx512m"
+      # The lbbs configset loads its SmartChinese analyzer through a <lib/>
+      # directive; Solr refuses <lib/> unless this is enabled (otherwise the
+      # core fails to start). Set here as well as in Dockerfile/dockerfile.solr
+      # so that pre-built / pulled images work without a rebuild.
+      SOLR_CONFIG_LIB_ENABLED: "true"
     command:
       - solr-precreate
       - lbbs
@@ -40,7 +57,7 @@ services:
 
   apache:
     image: leafok/lbbs-apache:combo
-    platform: ${RUN_PLATFORM}
+    platform: ${RUN_PLATFORM:-linux/amd64}
     restart: unless-stopped
     build:
       context: .
@@ -58,7 +75,7 @@ services:
 
   php:
     image: leafok/lbbs-php:combo
-    platform: ${RUN_PLATFORM}
+    platform: ${RUN_PLATFORM:-linux/amd64}
     restart: unless-stopped
     build:
       context: .
@@ -69,7 +86,7 @@ services:
       - apache-logs:/usr/local/apache2/logs
     depends_on:
       mysql:
-        condition: service_started
+        condition: service_healthy
         restart: true
     networks:
       - app-network
@@ -79,7 +96,7 @@ services:
 
   bbsd-prepare:
     image: leafok/lbbs-bbsd:combo
-    platform: ${RUN_PLATFORM}
+    platform: ${RUN_PLATFORM:-linux/amd64}
     restart: on-failure
     build:
       context: .
@@ -92,7 +109,7 @@ services:
       - bbsd-utils-conf:/usr/local/lbbs/utils/conf
     depends_on:
       mysql:
-        condition: service_started
+        condition: service_healthy
         restart: true
     networks:
       - app-network
@@ -100,7 +117,7 @@ services:
 
   bbsd:
     image: leafok/lbbs-bbsd:combo
-    platform: ${RUN_PLATFORM}
+    platform: ${RUN_PLATFORM:-linux/amd64}
     restart: unless-stopped
     shm_size: '4gb'
     ports:

@@ -9,6 +9,10 @@ This package provides a pre-configured Docker-based running environment of LeafO
 ## Installation
 
 ### Specify platforms of building targets and runtime version
+
+Both variables are optional; the values below are used as defaults when they are not set.
+When building on a non-amd64 host, set `RUN_PLATFORM` (and optionally `DOCKERHUB_PLATFORMS`)
+to the platform of that host.
 ```bash
 export DOCKERHUB_PLATFORMS="linux/amd64"
 export RUN_PLATFORM="linux/amd64"
@@ -29,9 +33,31 @@ docker compose pull
 docker compose up -d
 ```
 
+## Usage
+
+| Service    | Endpoint                      |
+| ---------- | ----------------------------- |
+| Web (HTTP) | <http://localhost:8080/bbs>   |
+| SSH        | `ssh -p 2322 sysop@localhost` |
+| Telnet     | `telnet localhost 2323`       |
+
+The database is pre-loaded with sample data. The test account is `sysop` with the
+temporary password `3anzHaNg`, which must be changed upon the first login.
+Anonymous access is available with the user name `guest` on SSH and Telnet.
+
 ### Update Solr data from database, on demand or periodically
 ```bash
-docker exec -it lbbs-combo-php-1 /usr/local/bin/export_xml_to_solr.sh
+docker compose exec php /usr/local/bin/export_xml_to_solr.sh
+```
+
+### Stop the application
+```bash
+docker compose down
+```
+
+### Stop the application and remove all persistent data
+```bash
+docker compose down -v
 ```
 
 ## Copyright

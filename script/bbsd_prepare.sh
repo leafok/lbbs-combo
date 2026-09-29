@@ -1,41 +1,49 @@
 #!/bin/sh
+set -eu
 
-cd /usr/local/lbbs/conf
+CONF_DIR="/usr/local/lbbs/conf"
+BIN_DIR="/usr/local/lbbs/utils/bin"
 
-if [ ! -f ssh_host_rsa_key ]; then
-    ssh-keygen -t rsa -C "MyBBS Server" -N "" -f ssh_host_rsa_key
-    if [ $? -ne 0 ]; then
-        exit 1
-    fi
+gen_host_key() {
+	key_file="$1"
+	key_type="$2"
+
+	if [ -f "$key_file" ]; then
+		return 0
+	fi
+
+	if ! ssh-keygen -t "$key_type" -C "MyBBS Server" -N "" -f "$key_file"; then
+		echo "Unable to generate SSH host key $key_file" >&2
+		return 1
+	fi
+}
+
+cd "$CONF_DIR"
+
+if ! gen_host_key ssh_host_rsa_key rsa; then
+	exit 1
 fi
-if [ ! -f ssh_host_ed25519_key ]; then
-    ssh-keygen -t ed25519 -C "MyBBS Server" -N "" -f ssh_host_ed25519_key
-    if [ $? -ne 0 ]; then
-        exit 2
-    fi
+if ! gen_host_key ssh_host_ed25519_key ed25519; then
+	exit 2
 fi
-if [ ! -f ssh_host_ecdsa_key ]; then
-    ssh-keygen -t ecdsa -C "MyBBS Server" -N "" -f ssh_host_ecdsa_key
-    if [ $? -ne 0 ]; then
-        exit 3
-    fi
+if ! gen_host_key ssh_host_ecdsa_key ecdsa; then
+	exit 3
 fi
 
-cd /usr/local/lbbs/utils/bin
+cd "$BIN_DIR"
 
-php gen_section_menu.php
-if [ $? -ne 0 ]; then
-    sleep 5
-    exit 4
+# The generated menus are shared with bbsd through the bbsd-var volume.
+# On failure exit non-zero so that "restart: on-failure" retries once the
+# database is reachable.
+if ! php gen_section_menu.php; then
+	sleep 5
+	exit 4
 fi
-
-php gen_ex_list.php
-if [ $? -ne 0 ]; then
-    sleep 5
-    exit 5
+if ! php gen_ex_list.php; then
+	sleep 5
+	exit 5
 fi
-php gen_top.php
-if [ $? -ne 0 ]; then
-    sleep 5
-    exit 6
+if ! php gen_top.php; then
+	sleep 5
+	exit 6
 fi

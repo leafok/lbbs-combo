@@ -9,6 +9,9 @@
 ## 安装
 
 ### 指定构建目标和运行版本的平台
+
+两个变量均为可选，未设置时使用下面的默认值。
+在非 amd64 主机上构建时，请将 `RUN_PLATFORM`（以及可选的 `DOCKERHUB_PLATFORMS`）设置为该主机的平台。
 ```bash
 export DOCKERHUB_PLATFORMS="linux/amd64"
 export RUN_PLATFORM="linux/amd64"
@@ -29,9 +32,30 @@ docker compose pull
 docker compose up -d
 ```
 
+## 使用
+
+| 服务        | 访问地址                      |
+| ---------- | ----------------------------- |
+| Web (HTTP) | <http://localhost:8080/bbs>   |
+| SSH        | `ssh -p 2322 sysop@localhost` |
+| Telnet     | `telnet localhost 2323`       |
+
+数据库已预置示例数据。测试帐号为 `sysop`，临时密码为 `3anzHaNg`，首次登录后必须修改。
+在 SSH 和 Telnet 上可使用帐号 `guest` 匿名访问。
+
 ### 根据需要或定期从数据库更新 Solr 数据
 ```bash
-docker exec -it lbbs-combo-php-1 /usr/local/bin/export_xml_to_solr.sh
+docker compose exec php /usr/local/bin/export_xml_to_solr.sh
+```
+
+### 停止应用程序
+```bash
+docker compose down
+```
+
+### 停止应用程序并删除所有持久化数据
+```bash
+docker compose down -v
 ```
 
 ## 版权

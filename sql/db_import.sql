@@ -842,7 +842,7 @@ CREATE TABLE `user_pubinfo` (
 
 LOCK TABLES `user_pubinfo` WRITE;
 /*!40000 ALTER TABLE `user_pubinfo` DISABLE KEYS */;
-INSERT INTO `user_pubinfo` VALUES (1,'懂王','zhangsan@example.com','M','','',0,0,'',150,0,4,1,'2026-01-01 00:00:00','2026-01-01 00:00:00','','','',1048576,NULL,'Asia/Shanghai',0);
+INSERT INTO `user_pubinfo` VALUES (1,'懂王','zhangsan@example.com','M','','',0,0,'',999,0,4,1,'2026-01-01 00:00:00','2026-01-01 00:00:00','','','',1048576,NULL,'Asia/Shanghai',0);
 /*!40000 ALTER TABLE `user_pubinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 
