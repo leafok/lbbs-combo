@@ -42,11 +42,6 @@ services:
       - solr-data:/var/solr
     environment:
       SOLR_JAVA_MEM: "-Xms256m -Xmx512m"
-      # The lbbs configset loads its SmartChinese analyzer through a <lib/>
-      # directive; Solr refuses <lib/> unless this is enabled (otherwise the
-      # core fails to start). Set here as well as in Dockerfile/dockerfile.solr
-      # so that pre-built / pulled images work without a rebuild.
-      SOLR_CONFIG_LIB_ENABLED: "true"
     command:
       - solr-precreate
       - lbbs

@@ -6,7 +6,7 @@ FROM solr:9.10-slim
 # The slim image does not ship the analysis-extras module, whose SmartChinese
 # analyzer is required by the lbbs configset. The jar is loaded by the <lib>
 # directive in solr-config/conf/solrconfig.xml.
-COPY --from=base /opt/solr/modules/analysis-extras/lib/lucene-analysis-smartcn-*.jar /opt/solr/modules/analysis-extras/lib/
+COPY --from=base /opt/solr/modules/analysis-extras/lib/lucene-analysis-smartcn-*.jar /opt/solr/lib/
 
 # Copy custom Solr configuration
 COPY ./solr-config /opt/solr/server/solr/configsets/lbbs

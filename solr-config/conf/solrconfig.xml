@@ -1023,6 +1023,4 @@
       EditorialMarkerFactory will do exactly that:
      <transformer name="qecBooster" class="org.apache.solr.response.transform.EditorialMarkerFactory" />
     -->
-
-     <lib dir="${solr.install.dir:../../../..}/modules/analysis-extras/lib/" regex="lucene-analysis-smartcn-.*\.jar" />
 </config>
