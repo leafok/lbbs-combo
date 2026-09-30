@@ -27,6 +27,7 @@ COPY ./leafok_bbs/Dockerfile/httpd-vhosts.conf /usr/local/apache2/conf/extra/htt
 RUN sed -i 's/#Include conf\/extra\/httpd-vhosts.conf/Include conf\/extra\/httpd-vhosts.conf/' /usr/local/apache2/conf/httpd.conf
 
 # Copy web application files
+COPY ./leafok_bbs/.htaccess /var/www/html/.htaccess
 COPY ./leafok_bbs/bbs /var/www/html/bbs
 COPY ./leafok_bbs/gen_ex /var/www/html/gen_ex
 COPY ./leafok_bbs/lib /var/www/html/lib
