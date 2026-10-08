@@ -1,7 +1,7 @@
-FROM solr:9.10 AS base
+FROM solr:9.11 AS base
 
 # Start from the official Solr slim image
-FROM solr:9.10-slim
+FROM solr:9.11-slim
 
 # The slim image does not ship the analysis-extras module, whose SmartChinese
 # analyzer is required by the lbbs configset. The jar is loaded by the <lib>
