@@ -59,3 +59,18 @@ jobs:
         # scope keeps the eight builds from evicting each other out of one shared cache
         cache-from: type=gha,scope=${{ matrix.image }}-${{ matrix.arch }}
         cache-to: type=gha,mode=max,scope=${{ matrix.image }}-${{ matrix.arch }}
+
+  # The matrix reports one check per leg and those names change whenever an image is
+  # added, so this job is the stable one to mark as required in the branch settings.
+  finalize:
+
+    name: all images built
+    needs: build
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check the matrix result
+        run: |
+          echo "build matrix result: ${{ needs.build.result }}"
+          test "${{ needs.build.result }}" = "success"
