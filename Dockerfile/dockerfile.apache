@@ -1,4 +1,4 @@
-FROM composer:latest AS composer_installer
+FROM composer:2.11 AS composer_installer
 
 # Set working directory
 RUN mkdir -p /usr/local/composer
@@ -9,7 +9,7 @@ COPY ./leafok_bbs/composer.json ./leafok_bbs/composer.lock ./
 RUN /usr/bin/composer install --prefer-dist --no-scripts --no-progress
 
 # Use the official Node image
-FROM node:slim AS node_installer
+FROM node:26-slim AS node_installer
 
 # Set working directory
 RUN mkdir -p /usr/local/node

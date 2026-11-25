@@ -17,7 +17,7 @@ RUN mkdir -p /var/lib/php/sessions \
 	&& chown -R www-data:www-data /var/lib/php/sessions
 
 # Install the solr extension via PECL
-RUN pecl install solr \
+RUN pecl install solr-2.9.3 \
 	&& docker-php-ext-enable solr
 
 COPY ./script/export_xml_to_solr.sh /usr/local/bin/export_xml_to_solr.sh
